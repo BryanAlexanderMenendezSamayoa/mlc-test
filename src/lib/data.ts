@@ -4,7 +4,7 @@ export type Invoice = {
   customerEmail: string;
   amount: number;
   dueDate: string;
-  status: 'Validated' | 'Not Validated';
+  status: 'Validada' | 'No Validada';
 };
 
 export const invoices: Invoice[] = [
@@ -14,7 +14,7 @@ export const invoices: Invoice[] = [
     customerEmail: 'contact@acme.com',
     amount: 250.0,
     dueDate: '2024-08-01',
-    status: 'Validated',
+    status: 'Validada',
   },
   {
     id: 'INV-002',
@@ -22,7 +22,7 @@ export const invoices: Invoice[] = [
     customerEmail: 'tony@starkindustries.com',
     amount: 1500.5,
     dueDate: '2024-08-05',
-    status: 'Not Validated',
+    status: 'No Validada',
   },
   {
     id: 'INV-003',
@@ -30,7 +30,7 @@ export const invoices: Invoice[] = [
     customerEmail: 'bruce@wayne.com',
     amount: 750.0,
     dueDate: '2024-07-25',
-    status: 'Validated',
+    status: 'Validada',
   },
   {
     id: 'INV-004',
@@ -38,7 +38,7 @@ export const invoices: Invoice[] = [
     customerEmail: 'sales@ollivanders.co.uk',
     amount: 89.99,
     dueDate: '2024-08-10',
-    status: 'Not Validated',
+    status: 'No Validada',
   },
   {
     id: 'INV-005',
@@ -46,7 +46,7 @@ export const invoices: Invoice[] = [
     customerEmail: 'info@cyberdyne.com',
     amount: 12000.0,
     dueDate: '2024-09-01',
-    status: 'Not Validated',
+    status: 'No Validada',
   },
   {
     id: 'INV-006',
@@ -54,6 +54,6 @@ export const invoices: Invoice[] = [
     customerEmail: 'gordon@gekko.com',
     amount: 345.67,
     dueDate: '2024-07-30',
-    status: 'Validated',
+    status: 'Validada',
   },
 ];

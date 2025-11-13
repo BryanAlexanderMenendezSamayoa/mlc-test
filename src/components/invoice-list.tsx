@@ -7,17 +7,17 @@ type InvoiceListProps = {
 
 export default function InvoiceList({ invoices }: InvoiceListProps) {
   const needsReviewInvoices = invoices.filter(
-    (invoice) => invoice.status === 'Not Validated'
+    (invoice) => invoice.status === 'No Validada'
   );
   const validatedInvoices = invoices.filter(
-    (invoice) => invoice.status === 'Validated'
+    (invoice) => invoice.status === 'Validada'
   );
 
   return (
     <div className="space-y-12">
       <section>
         <h2 className="mb-6 text-2xl font-semibold tracking-tight text-foreground">
-          Action Required
+          Acción Requerida
         </h2>
         {needsReviewInvoices.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -27,14 +27,14 @@ export default function InvoiceList({ invoices }: InvoiceListProps) {
           </div>
         ) : (
           <p className="text-muted-foreground">
-            No invoices require your attention.
+            Ninguna factura requiere su atención.
           </p>
         )}
       </section>
 
       <section>
         <h2 className="mb-6 text-2xl font-semibold tracking-tight text-foreground">
-          Validated
+          Validadas
         </h2>
         {validatedInvoices.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -43,7 +43,7 @@ export default function InvoiceList({ invoices }: InvoiceListProps) {
             ))}
           </div>
         ) : (
-          <p className="text-muted-foreground">No validated invoices found.</p>
+          <p className="text-muted-foreground">No se encontraron facturas validadas.</p>
         )}
       </section>
     </div>

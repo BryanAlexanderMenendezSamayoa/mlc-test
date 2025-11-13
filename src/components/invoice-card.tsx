@@ -29,14 +29,14 @@ type InvoiceCardProps = {
 };
 
 const statusConfig = {
-  Validated: {
-    label: 'Validated',
+  Validada: {
+    label: 'Validada',
     icon: CheckCircle2,
     className:
       'bg-teal-100 text-teal-800 dark:bg-teal-900/50 dark:text-teal-300',
   },
-  'Not Validated': {
-    label: 'Not Validated',
+  'No Validada': {
+    label: 'No Validada',
     icon: AlertTriangle,
     className:
       'bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300',
@@ -53,8 +53,8 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
 
   const handleSendToReview = () => {
     toast({
-      title: "Sent for Review",
-      description: `Invoice ${invoice.id} has been sent for review.`,
+      title: "Enviado para Revisión",
+      description: `La factura ${invoice.id} ha sido enviada para revisión.`,
     })
   };
 
@@ -62,9 +62,9 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
     setIsLoading(true);
     setNotification(null);
     try {
-      const invoiceDetails = `Invoice ID: ${invoice.id}, Customer: ${invoice.customerName}, Amount: $${invoice.amount}, Due: ${invoice.dueDate}`;
+      const invoiceDetails = `ID de Factura: ${invoice.id}, Cliente: ${invoice.customerName}, Cantidad: $${invoice.amount}, Vencimiento: ${invoice.dueDate}`;
       const result = await getAINotification({
-        invoiceStatus: 'not validated',
+        invoiceStatus: 'no validada',
         invoiceDetails,
       });
       setNotification(result.notification);
@@ -73,7 +73,7 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Could not get AI suggestion. Please try again.",
+        description: "No se pudo obtener la sugerencia de la IA. Por favor, inténtalo de nuevo.",
       });
     } finally {
       setIsLoading(false);
@@ -99,15 +99,15 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
       </CardHeader>
       <CardContent className="flex-grow space-y-4">
         <div className="space-y-1">
-          <p className="text-sm font-medium text-muted-foreground">Amount</p>
+          <p className="text-sm font-medium text-muted-foreground">Cantidad</p>
           <p className="text-2xl font-semibold text-foreground">
             ${invoice.amount.toFixed(2)}
           </p>
         </div>
         <div className="space-y-1">
-          <p className="text-sm font-medium text-muted-foreground">Due Date</p>
+          <p className="text-sm font-medium text-muted-foreground">Fecha de Vencimiento</p>
           <p className="font-medium text-foreground">
-            {new Date(invoice.dueDate).toLocaleDateString('en-US', {
+            {new Date(invoice.dueDate).toLocaleDateString('es-ES', {
               year: 'numeric',
               month: 'long',
               day: 'numeric',
@@ -122,11 +122,11 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
         )}
       </CardContent>
       <CardFooter className="flex flex-col items-stretch gap-2 bg-muted/50 p-4">
-        {invoice.status === 'Not Validated' && (
+        {invoice.status === 'No Validada' && (
           <>
             <Button onClick={handleSendToReview} variant="secondary">
               <Send className="mr-2 h-4 w-4" />
-              Send to Review
+              Enviar a Revisión
             </Button>
             <Button onClick={handleGetSuggestion} disabled={isLoading}>
               {isLoading ? (
@@ -134,14 +134,14 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
               ) : (
                 <Lightbulb className="mr-2 h-4 w-4" />
               )}
-              AI Suggestion
+              Sugerencia de IA
             </Button>
           </>
         )}
-        {invoice.status === 'Validated' && (
+        {invoice.status === 'Validada' && (
           <Button variant="outline">
             <Download className="mr-2 h-4 w-4" />
-            Download PDF
+            Descargar PDF
           </Button>
         )}
       </CardFooter>

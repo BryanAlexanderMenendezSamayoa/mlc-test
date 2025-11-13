@@ -1,11 +1,11 @@
 'use server';
 
 /**
- * @fileOverview An AI agent that monitors invoice statuses and suggests important upcoming actions.
+ * @fileOverview Un agente de IA que monitorea los estados de las facturas y sugiere acciones importantes a seguir.
  *
- * - getInvoiceNotifications - A function that generates dynamic notifications based on invoice statuses.
- * - InvoiceNotificationsInput - The input type for the getInvoiceNotifications function.
- * - InvoiceNotificationsOutput - The return type for the getInvoiceNotifications function.
+ * - getInvoiceNotifications - Una función que genera notificaciones dinámicas basadas en los estados de las facturas.
+ * - InvoiceNotificationsInput - El tipo de entrada para la función getInvoiceNotifications.
+ * - InvoiceNotificationsOutput - El tipo de retorno para la función getInvoiceNotifications.
  */
 
 import {ai} from '@/ai/genkit';
@@ -15,13 +15,14 @@ const InvoiceNotificationsInputSchema = z.object({
   invoiceStatus: z
     .string()
     .describe(
-      'The validation status of the invoice. Can be \'validated\' or \'not validated\'.'    ),
-  invoiceDetails: z.string().describe('Additional details about the invoice.'),
+      'El estado de validación de la factura. Puede ser \'validada\' o \'no validada\'.'
+    ),
+  invoiceDetails: z.string().describe('Detalles adicionales sobre la factura.'),
 });
 export type InvoiceNotificationsInput = z.infer<typeof InvoiceNotificationsInputSchema>;
 
 const InvoiceNotificationsOutputSchema = z.object({
-  notification: z.string().describe('A dynamic notification suggesting an upcoming action.'),
+  notification: z.string().describe('Una notificación dinámica que sugiere una próxima acción.'),
 });
 export type InvoiceNotificationsOutput = z.infer<typeof InvoiceNotificationsOutputSchema>;
 
@@ -35,14 +36,14 @@ const prompt = ai.definePrompt({
   name: 'invoiceActionNotificationsPrompt',
   input: {schema: InvoiceNotificationsInputSchema},
   output: {schema: InvoiceNotificationsOutputSchema},
-  prompt: `You are an AI assistant that monitors invoice statuses and suggests important upcoming actions.
+  prompt: `Eres un asistente de IA que monitorea los estados de las facturas y sugiere acciones importantes a seguir.
 
-  Based on the invoice status and details, generate a dynamic notification suggesting the next action.
+  Basado en el estado y los detalles de la factura, genera una notificación dinámica que sugiera la siguiente acción.
 
-  Invoice Status: {{{invoiceStatus}}}
-  Invoice Details: {{{invoiceDetails}}}
+  Estado de la Factura: {{{invoiceStatus}}}
+  Detalles de la Factura: {{{invoiceDetails}}}
 
-  Notification: `,
+  Notificación: `,
 });
 
 const invoiceActionNotificationsFlow = ai.defineFlow(

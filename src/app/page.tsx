@@ -41,17 +41,17 @@ export default async function Home() {
                 strokeWidth="16"
               />
             </svg>
-            <span className="font-bold text-foreground">Invoice Overview</span>
+            <span className="font-bold text-foreground">Resumen de Facturas</span>
           </div>
         </div>
       </header>
       <main className="container mx-auto p-4 md:p-6 lg:p-8">
         <div className="mb-8 space-y-2">
           <h1 className="font-headline text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-            Welcome Back
+            Bienvenido de Nuevo
           </h1>
           <p className="text-muted-foreground">
-            Here is a summary of your recent invoices.
+            Aquí hay un resumen de sus facturas recientes.
           </p>
         </div>
         <InvoiceList invoices={allInvoices} />
