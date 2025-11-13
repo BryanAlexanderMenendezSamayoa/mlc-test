@@ -5,8 +5,6 @@ import {
   AlertTriangle,
   CheckCircle2,
   Download,
-  Lightbulb,
-  Loader2,
   Send,
 } from 'lucide-react';
 import type { Invoice } from '@/lib/data';
@@ -20,7 +18,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { getAINotification } from '@/app/actions';
 import { useToast } from "@/hooks/use-toast"
 
 
@@ -45,11 +42,10 @@ const statusConfig = {
 
 export default function InvoiceCard({ invoice }: InvoiceCardProps) {
   const { toast } = useToast();
-  const [notification, setNotification] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [formattedDate, setFormattedDate] = useState('');
 
   useEffect(() => {
+    // Client-side only date formatting
     setFormattedDate(
       new Date(invoice.dueDate).toLocaleDateString('es-ES', {
         year: 'numeric',
@@ -68,28 +64,6 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
       title: "Enviado para Revisión",
       description: `La factura ${invoice.id} ha sido enviada para revisión.`,
     })
-  };
-
-  const handleGetSuggestion = async () => {
-    setIsLoading(true);
-    setNotification(null);
-    try {
-      const invoiceDetails = `ID de Factura: ${invoice.id}, Cliente: ${invoice.customerName}, Cantidad: $${invoice.amount}, Vencimiento: ${invoice.dueDate}`;
-      const result = await getAINotification({
-        invoiceStatus: 'no validada',
-        invoiceDetails,
-      });
-      setNotification(result.notification);
-    } catch (error) {
-      console.error('Failed to get AI notification:', error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "No se pudo obtener la sugerencia de la IA. Por favor, inténtalo de nuevo.",
-      });
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   return (
@@ -122,12 +96,6 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
             {formattedDate}
           </p>
         </div>
-        {notification && (
-          <div className="mt-4 flex items-start gap-3 rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm text-blue-800 dark:border-blue-900/50 dark:bg-blue-900/30 dark:text-blue-200">
-            <Lightbulb className="h-5 w-5 flex-shrink-0" />
-            <p>{notification}</p>
-          </div>
-        )}
       </CardContent>
       <CardFooter className="flex flex-col items-stretch gap-2 bg-muted/50 p-4">
         {invoice.status === 'No Validada' && (
@@ -135,14 +103,6 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
             <Button onClick={handleSendToReview} variant="secondary">
               <Send className="mr-2 h-4 w-4" />
               Enviar a Revisión
-            </Button>
-            <Button onClick={handleGetSuggestion} disabled={isLoading}>
-              {isLoading ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <Lightbulb className="mr-2 h-4 w-4" />
-              )}
-              Sugerencia de IA
             </Button>
           </>
         )}
