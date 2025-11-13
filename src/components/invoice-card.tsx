@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   AlertTriangle,
   CheckCircle2,
@@ -47,6 +47,18 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
   const { toast } = useToast();
   const [notification, setNotification] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [formattedDate, setFormattedDate] = useState('');
+
+  useEffect(() => {
+    setFormattedDate(
+      new Date(invoice.dueDate).toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    );
+  }, [invoice.dueDate]);
+
 
   const currentStatus = statusConfig[invoice.status];
   const Icon = currentStatus.icon;
@@ -107,11 +119,7 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
         <div className="space-y-1">
           <p className="text-sm font-medium text-muted-foreground">Fecha de Vencimiento</p>
           <p className="font-medium text-foreground">
-            {new Date(invoice.dueDate).toLocaleDateString('es-ES', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
+            {formattedDate}
           </p>
         </div>
         {notification && (
