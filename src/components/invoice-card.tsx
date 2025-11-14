@@ -53,7 +53,6 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
 
   useEffect(() => {
     if (dueDate) {
-      // Client-side only date formatting
       setFormattedDate(
         new Date(dueDate).toLocaleDateString('es-ES', {
           year: 'numeric',

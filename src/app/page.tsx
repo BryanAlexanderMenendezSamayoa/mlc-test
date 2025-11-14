@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { RefreshCw } from 'lucide-react';
 import type { Invoice } from '@/lib/data';
 import InvoiceList from '@/components/invoice-list';
-import ChatWindow from '@/components/chat-window'; // Import the new ChatWindow component
+import ChatWindow from '@/components/chat-window';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -14,7 +14,7 @@ async function getInvoices(): Promise<Invoice[]> {
     const response = await fetch(
       'https://test-mlc-127465468754.us-central1.run.app/resultados',
       {
-        cache: 'no-store', // Fetch fresh data on each request
+        cache: 'no-store',
       }
     );
     if (!response.ok) {
@@ -24,7 +24,6 @@ async function getInvoices(): Promise<Invoice[]> {
     return data;
   } catch (error) {
     console.error(error);
-    // Return an empty array or handle the error as needed
     return [];
   }
 }
@@ -41,22 +40,18 @@ export default function Home() {
       setInvoices(allInvoices);
     };
 
-    fetchInvoices(); // Fetch initially
+    fetchInvoices();
 
-    const intervalId = setInterval(fetchInvoices, 10000); // Fetch every 10 seconds
+    const intervalId = setInterval(fetchInvoices, 10000);
 
-    return () => clearInterval(intervalId); // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleUpdate = () => {
-    // Fire and forget the request
     fetch('https://test-mlc-127465468754.us-central1.run.app/').catch((error) => {
-      // We can log the error, but we won't bother the user with a destructive toast
-      // since the main functionality (viewing invoices) is still working.
       console.error('Error al iniciar la actualización:', error);
     });
 
-    // Immediately notify the user
     toast({
       title: 'Actualización en proceso',
       description: 'Se ha solicitado una nueva extracción de facturas. Los resultados aparecerán aquí en breve.',
