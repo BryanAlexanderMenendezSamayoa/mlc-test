@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from 'react';
 import type { Invoice } from '@/lib/data';
 import InvoiceList from '@/components/invoice-list';
 
@@ -21,8 +24,21 @@ async function getInvoices(): Promise<Invoice[]> {
   }
 }
 
-export default async function Home() {
-  const allInvoices = await getInvoices();
+export default function Home() {
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+
+  useEffect(() => {
+    const fetchInvoices = async () => {
+      const allInvoices = await getInvoices();
+      setInvoices(allInvoices);
+    };
+
+    fetchInvoices(); // Fetch initially
+
+    const intervalId = setInterval(fetchInvoices, 10000); // Fetch every 10 seconds
+
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -73,7 +89,7 @@ export default async function Home() {
             Aquí hay un resumen de sus facturas recientes.
           </p>
         </div>
-        <InvoiceList invoices={allInvoices} />
+        <InvoiceList invoices={invoices} />
       </main>
     </div>
   );
