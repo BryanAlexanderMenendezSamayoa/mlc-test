@@ -4,21 +4,16 @@ import { useState, useEffect } from 'react';
 import {
   AlertTriangle,
   CheckCircle2,
-  Download,
-  Send,
 } from 'lucide-react';
 import type { Invoice } from '@/lib/data';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { useToast } from "@/hooks/use-toast"
 
 
 type InvoiceCardProps = {
@@ -41,7 +36,6 @@ const statusConfig = {
 };
 
 export default function InvoiceCard({ invoice }: InvoiceCardProps) {
-  const { toast } = useToast();
   const [formattedDate, setFormattedDate] = useState('');
 
   const { factura_data, status, file_name } = invoice;
@@ -70,13 +64,6 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
 
   const currentStatus = statusConfig[status];
   const Icon = currentStatus.icon;
-
-  const handleSendToReview = () => {
-    toast({
-      title: "Enviado para Revisión",
-      description: `La factura ${invoiceId} ha sido enviada para revisión.`,
-    })
-  };
 
   return (
     <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-lg">
@@ -119,22 +106,6 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
           <p className="text-sm text-muted-foreground">{invoice.comentarios}</p>
         </div>
       </CardContent>
-      <CardFooter className="flex flex-col items-stretch gap-2 bg-muted/50 p-4">
-        {status === 'No validada' && (
-          <>
-            <Button onClick={handleSendToReview} variant="secondary">
-              <Send className="mr-2 h-4 w-4" />
-              Enviar a Revisión
-            </Button>
-          </>
-        )}
-        {status === 'Validada' && (
-          <Button variant="outline">
-            <Download className="mr-2 h-4 w-4" />
-            Descargar
-          </Button>
-        )}
-      </CardFooter>
     </Card>
   );
 }
