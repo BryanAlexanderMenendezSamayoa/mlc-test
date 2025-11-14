@@ -48,27 +48,19 @@ export default function Home() {
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, []);
 
-  const handleUpdate = async () => {
-    setIsUpdating(true);
-    try {
-      const response = await fetch('https://test-mlc-127465468754.us-central1.run.app/');
-      if (!response.ok) {
-        throw new Error('La respuesta de la red no fue correcta');
-      }
-      toast({
-        title: 'Actualización iniciada',
-        description: 'El proceso de extracción de facturas ha comenzado. Los resultados aparecerán en breve.',
-      });
-    } catch (error) {
-      console.error('Error al actualizar:', error);
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: 'No se pudo iniciar el proceso de actualización. Por favor, inténtalo de nuevo.',
-      });
-    } finally {
-      setIsUpdating(false);
-    }
+  const handleUpdate = () => {
+    // Fire and forget the request
+    fetch('https://test-mlc-127465468754.us-central1.run.app/').catch((error) => {
+      // We can log the error, but we won't bother the user with a destructive toast
+      // since the main functionality (viewing invoices) is still working.
+      console.error('Error al iniciar la actualización:', error);
+    });
+
+    // Immediately notify the user
+    toast({
+      title: 'Actualización en proceso',
+      description: 'Se ha solicitado una nueva extracción de facturas. Los resultados aparecerán aquí en breve.',
+    });
   };
 
   return (
