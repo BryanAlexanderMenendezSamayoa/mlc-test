@@ -43,10 +43,12 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
     'Número de factura': invoiceId,
     Proveedor: customerName,
     'Monto total': amountStr,
+    Impuestos: taxStr,
     Fecha: dueDate,
   } = factura_data;
 
   const amount = amountStr ? parseFloat(amountStr) : null;
+  const taxAmount = taxStr ? parseFloat(taxStr) : null;
 
 
   useEffect(() => {
@@ -85,15 +87,27 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
         <CardDescription>{customerName}</CardDescription>
       </CardHeader>
       <CardContent className="flex-grow space-y-4">
-        <div className="space-y-1">
-          <p className="text-sm font-medium text-muted-foreground">Monto</p>
-          {amount !== null ? (
-            <p className="text-2xl font-semibold text-foreground">
-              {factura_data.Moneda} {amount.toFixed(2)}
-            </p>
-          ) : (
-            <p className="text-2xl font-semibold text-red-500">Campo faltante</p>
-          )}
+        <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <p className="text-sm font-medium text-muted-foreground">Monto</p>
+              {amount !== null ? (
+                <p className="text-2xl font-semibold text-foreground">
+                  {factura_data.Moneda} {amount.toFixed(2)}
+                </p>
+              ) : (
+                <p className="text-sm font-medium text-red-500">Campo faltante</p>
+              )}
+            </div>
+            <div className="space-y-1">
+              <p className="text-sm font-medium text-muted-foreground">Impuestos</p>
+              {taxAmount !== null ? (
+                <p className="text-2xl font-semibold text-foreground">
+                  {factura_data.Moneda} {taxAmount.toFixed(2)}
+                </p>
+              ) : (
+                <p className="text-sm font-medium text-red-500">Campo faltante</p>
+              )}
+            </div>
         </div>
         <div className="space-y-1">
           <p className="text-sm font-medium text-muted-foreground">Fecha</p>
