@@ -7,7 +7,7 @@ type InvoiceListProps = {
 
 export default function InvoiceList({ invoices }: InvoiceListProps) {
   const needsReviewInvoices = invoices.filter(
-    (invoice) => invoice.status === 'No Validada'
+    (invoice) => invoice.status === 'No validada'
   );
   const validatedInvoices = invoices.filter(
     (invoice) => invoice.status === 'Validada'
@@ -22,7 +22,7 @@ export default function InvoiceList({ invoices }: InvoiceListProps) {
         {needsReviewInvoices.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
             {needsReviewInvoices.map((invoice) => (
-              <InvoiceCard key={invoice.id} invoice={invoice} />
+              <InvoiceCard key={invoice.file_id} invoice={invoice} />
             ))}
           </div>
         ) : (
@@ -39,7 +39,7 @@ export default function InvoiceList({ invoices }: InvoiceListProps) {
         {validatedInvoices.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
             {validatedInvoices.map((invoice) => (
-              <InvoiceCard key={invoice.id} invoice={invoice} />
+              <InvoiceCard key={invoice.file_id} invoice={invoice} />
             ))}
           </div>
         ) : (

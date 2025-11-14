@@ -32,7 +32,7 @@ const statusConfig = {
     className:
       'bg-teal-100 text-teal-800 dark:bg-teal-900/50 dark:text-teal-300',
   },
-  'No Validada': {
+  'No validada': {
     label: 'No Validada',
     icon: AlertTriangle,
     className:
@@ -44,25 +44,37 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
   const { toast } = useToast();
   const [formattedDate, setFormattedDate] = useState('');
 
+  const { factura_data, status, file_name } = invoice;
+  const {
+    'Número de factura': invoiceId,
+    Proveedor: customerName,
+    'Monto total': amountStr,
+    Fecha: dueDate,
+  } = factura_data;
+
+  const amount = amountStr ? parseFloat(amountStr) : 0;
+
+
   useEffect(() => {
-    // Client-side only date formatting
-    setFormattedDate(
-      new Date(invoice.dueDate).toLocaleDateString('es-ES', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      })
-    );
-  }, [invoice.dueDate]);
+    if (dueDate) {
+      // Client-side only date formatting
+      setFormattedDate(
+        new Date(dueDate).toLocaleDateString('es-ES', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+      );
+    }
+  }, [dueDate]);
 
-
-  const currentStatus = statusConfig[invoice.status];
+  const currentStatus = statusConfig[status];
   const Icon = currentStatus.icon;
 
   const handleSendToReview = () => {
     toast({
       title: "Enviado para Revisión",
-      description: `La factura ${invoice.id} ha sido enviada para revisión.`,
+      description: `La factura ${invoiceId} ha sido enviada para revisión.`,
     })
   };
 
@@ -70,35 +82,41 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
     <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-lg">
       <CardHeader>
         <div className="flex items-start justify-between">
-          <CardTitle className="text-lg font-bold">{invoice.id}</CardTitle>
-          <div
-            className={cn(
-              'inline-flex items-center gap-x-1.5 rounded-full px-2.5 py-1 text-xs font-medium',
-              currentStatus.className
-            )}
-          >
-            <Icon className="h-3.5 w-3.5" />
-            <span>{currentStatus.label}</span>
-          </div>
+          <CardTitle className="text-lg font-bold">{invoiceId || 'N/A'}</CardTitle>
+          {currentStatus && (
+            <div
+              className={cn(
+                'inline-flex items-center gap-x-1.5 rounded-full px-2.5 py-1 text-xs font-medium',
+                currentStatus.className
+              )}
+            >
+              <Icon className="h-3.5 w-3.5" />
+              <span>{currentStatus.label}</span>
+            </div>
+          )}
         </div>
-        <CardDescription>{invoice.customerName}</CardDescription>
+        <CardDescription>{customerName}</CardDescription>
       </CardHeader>
       <CardContent className="flex-grow space-y-4">
         <div className="space-y-1">
-          <p className="text-sm font-medium text-muted-foreground">Cantidad</p>
+          <p className="text-sm font-medium text-muted-foreground">Monto</p>
           <p className="text-2xl font-semibold text-foreground">
-            ${invoice.amount.toFixed(2)}
+             {factura_data.Moneda} {amount.toFixed(2)}
           </p>
         </div>
         <div className="space-y-1">
-          <p className="text-sm font-medium text-muted-foreground">Fecha de Vencimiento</p>
+          <p className="text-sm font-medium text-muted-foreground">Fecha</p>
           <p className="font-medium text-foreground">
-            {formattedDate}
+            {formattedDate || 'N/A'}
           </p>
+        </div>
+        <div className="space-y-1">
+          <p className="text-sm font-medium text-muted-foreground">Comentarios</p>
+          <p className="text-sm text-muted-foreground">{invoice.comentarios}</p>
         </div>
       </CardContent>
       <CardFooter className="flex flex-col items-stretch gap-2 bg-muted/50 p-4">
-        {invoice.status === 'No Validada' && (
+        {status === 'No validada' && (
           <>
             <Button onClick={handleSendToReview} variant="secondary">
               <Send className="mr-2 h-4 w-4" />
@@ -106,10 +124,10 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
             </Button>
           </>
         )}
-        {invoice.status === 'Validada' && (
+        {status === 'Validada' && (
           <Button variant="outline">
             <Download className="mr-2 h-4 w-4" />
-            Descargar PDF
+            Descargar
           </Button>
         )}
       </CardFooter>

@@ -1,16 +1,35 @@
-import { invoices } from '@/lib/data';
+import type { Invoice } from '@/lib/data';
 import InvoiceList from '@/components/invoice-list';
 
+async function getInvoices(): Promise<Invoice[]> {
+  try {
+    const response = await fetch(
+      'https://test-mlc-127465468754.us-central1.run.app/resultados',
+      {
+        cache: 'no-store', // Fetch fresh data on each request
+      }
+    );
+    if (!response.ok) {
+      throw new Error('Failed to fetch invoices');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    // Return an empty array or handle the error as needed
+    return [];
+  }
+}
+
 export default async function Home() {
-  // In a real application, you would fetch the invoices from an API endpoint.
-  const allInvoices = invoices;
+  const allInvoices = await getInvoices();
 
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-10 border-b bg-background/80 backdrop-blur-sm">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
           <div className="flex items-center gap-2">
-             <svg
+            <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 256 256"
               className="h-6 w-6 text-primary"
