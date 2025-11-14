@@ -1,10 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import {
-  AlertTriangle,
-  CheckCircle2,
-} from 'lucide-react';
+import { AlertTriangle, CheckCircle2 } from 'lucide-react';
 import type { Invoice } from '@/lib/data';
 import { cn } from '@/lib/utils';
 import {
@@ -14,7 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-
 
 type InvoiceCardProps = {
   invoice: Invoice;
@@ -36,9 +31,7 @@ const statusConfig = {
 };
 
 export default function InvoiceCard({ invoice }: InvoiceCardProps) {
-  const [formattedDate, setFormattedDate] = useState('');
-
-  const { factura_data, status, file_name } = invoice;
+  const { factura_data, status } = invoice;
   const {
     'Número de factura': invoiceId,
     Proveedor: customerName,
@@ -49,19 +42,6 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
 
   const amount = amountStr ? parseFloat(amountStr) : null;
   const taxAmount = taxStr ? parseFloat(taxStr) : null;
-
-
-  useEffect(() => {
-    if (dueDate) {
-      setFormattedDate(
-        new Date(dueDate).toLocaleDateString('es-ES', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })
-      );
-    }
-  }, [dueDate]);
 
   const currentStatus = statusConfig[status];
   const Icon = currentStatus.icon;
@@ -87,32 +67,30 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
       </CardHeader>
       <CardContent className="flex-grow space-y-4">
         <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1">
-              <p className="text-sm font-medium text-muted-foreground">Monto</p>
-              {amount !== null ? (
-                <p className="text-2xl font-semibold text-foreground">
-                  {factura_data.Moneda} {amount.toFixed(2)}
-                </p>
-              ) : (
-                <p className="text-sm font-medium text-red-500">Campo faltante</p>
-              )}
-            </div>
-            <div className="space-y-1">
-              <p className="text-sm font-medium text-muted-foreground">Impuestos</p>
-              {taxAmount !== null ? (
-                <p className="text-2xl font-semibold text-foreground">
-                  {factura_data.Moneda} {taxAmount.toFixed(2)}
-                </p>
-              ) : (
-                <p className="text-sm font-medium text-red-500">Campo faltante</p>
-              )}
-            </div>
+          <div className="space-y-1">
+            <p className="text-sm font-medium text-muted-foreground">Monto</p>
+            {amount !== null ? (
+              <p className="text-2xl font-semibold text-foreground">
+                {factura_data.Moneda} {amount.toFixed(2)}
+              </p>
+            ) : (
+              <p className="text-sm font-medium text-red-500">Campo faltante</p>
+            )}
+          </div>
+          <div className="space-y-1">
+            <p className="text-sm font-medium text-muted-foreground">Impuestos</p>
+            {taxAmount !== null ? (
+              <p className="text-2xl font-semibold text-foreground">
+                {factura_data.Moneda} {taxAmount.toFixed(2)}
+              </p>
+            ) : (
+              <p className="text-sm font-medium text-red-500">Campo faltante</p>
+            )}
+          </div>
         </div>
         <div className="space-y-1">
           <p className="text-sm font-medium text-muted-foreground">Fecha</p>
-          <p className="font-medium text-foreground">
-            {formattedDate || 'N/A'}
-          </p>
+          <p className="font-medium text-foreground">{dueDate || 'N/A'}</p>
         </div>
         <div className="space-y-1">
           <p className="text-sm font-medium text-muted-foreground">Comentarios</p>
