@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import ReactMarkdown from 'react-markdown';
 
 type Message = {
   text: string;
@@ -95,7 +96,17 @@ export default function ChatWindow() {
                       : 'bg-muted'
                   )}
                 >
-                  {message.text}
+                  <ReactMarkdown
+                    className="prose prose-sm dark:prose-invert"
+                    components={{
+                      p: ({ node, ...props }) => <p className="mb-2 last:mb-0" {...props} />,
+                      ul: ({ node, ...props }) => <ul className="list-disc pl-5" {...props} />,
+                      ol: ({ node, ...props }) => <ol className="list-decimal pl-5" {...props} />,
+                      strong: ({ node, ...props }) => <strong className="font-bold" {...props} />,
+                    }}
+                  >
+                    {message.text}
+                  </ReactMarkdown>
                 </div>
                  {message.isUser && (
                   <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-muted text-muted-foreground">
