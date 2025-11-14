@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import type { Invoice } from '@/lib/data';
 import InvoiceList from '@/components/invoice-list';
+import ChatWindow from '@/components/chat-window'; // Import the new ChatWindow component
 
 async function getInvoices(): Promise<Invoice[]> {
   try {
@@ -42,7 +43,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-10 border-b bg-background/80 backdrop-blur-sm">
+      <header className="sticky top-0 z-30 border-b bg-background/80 backdrop-blur-sm">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
           <div className="flex items-center gap-2">
             <svg
@@ -80,17 +81,22 @@ export default function Home() {
           </div>
         </div>
       </header>
-      <main className="container mx-auto p-4 md:p-6 lg:p-8">
-        <div className="mb-8 space-y-2">
-          <h1 className="font-headline text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-            Bienvenido de Nuevo
-          </h1>
-          <p className="text-muted-foreground">
-            Aquí hay un resumen de sus facturas recientes.
-          </p>
-        </div>
-        <InvoiceList invoices={invoices} />
-      </main>
+      <div className="container mx-auto flex flex-col lg:flex-row lg:gap-8">
+        <main className="flex-1 p-4 md:p-6 lg:p-8">
+          <div className="mb-8 space-y-2">
+            <h1 className="font-headline text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+              Bienvenido de Nuevo
+            </h1>
+            <p className="text-muted-foreground">
+              Aquí hay un resumen de sus facturas recientes.
+            </p>
+          </div>
+          <InvoiceList invoices={invoices} />
+        </main>
+        <aside className="w-full lg:w-[400px] lg:border-l lg:p-8">
+          <ChatWindow />
+        </aside>
+      </div>
     </div>
   );
 }
