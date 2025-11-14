@@ -52,7 +52,7 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
     Fecha: dueDate,
   } = factura_data;
 
-  const amount = amountStr ? parseFloat(amountStr) : 0;
+  const amount = amountStr ? parseFloat(amountStr) : null;
 
 
   useEffect(() => {
@@ -100,9 +100,13 @@ export default function InvoiceCard({ invoice }: InvoiceCardProps) {
       <CardContent className="flex-grow space-y-4">
         <div className="space-y-1">
           <p className="text-sm font-medium text-muted-foreground">Monto</p>
-          <p className="text-2xl font-semibold text-foreground">
-             {factura_data.Moneda} {amount.toFixed(2)}
-          </p>
+          {amount !== null ? (
+            <p className="text-2xl font-semibold text-foreground">
+              {factura_data.Moneda} {amount.toFixed(2)}
+            </p>
+          ) : (
+            <p className="text-2xl font-semibold text-red-500">Campo faltante</p>
+          )}
         </div>
         <div className="space-y-1">
           <p className="text-sm font-medium text-muted-foreground">Fecha</p>
